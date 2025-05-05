@@ -114,11 +114,11 @@ import { doLogin } from '../../contexts/auth/login';
                   <form noValidate className="mb-4">
                     <div className="grid gap-2">
                       <div className="grid gap-1">
-                        <label className="text-white" htmlFor="nickname">nickname</label>
+                        <label className="text-white" htmlFor="nickname">Nickname</label>
                         <input
                           className="mr-2.5 mb-2 h-full min-h-[44px] w-full rounded-lg border bg-zinc-950 text-white border-zinc-800 px-4 py-3 text-sm font-medium placeholder:text-zinc-400 focus:outline-0 dark:border-zinc-800 dark:bg-transparent dark:text-white dark:placeholder:text-zinc-400"
                           id="nickname"
-                          placeholder="name@example.com"
+                          placeholder="nickname"
                           type="nickname"
                           autoCapitalize="none"
                           autoComplete="nickname"

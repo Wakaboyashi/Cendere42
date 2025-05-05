@@ -24,12 +24,13 @@ const Home = () => {
         fetchData();
       }, []);
 
-    const userName = user.name || "Loading...";
+    const userName = user.name;
     const userAvatar = user.avatar; // Placeholder image if avatar is not available
     const userScore = user.score || 0;
 
       console.log(userName, userAvatar, userScore)
     return (
+        
         <div className="w-full max-w-md rounded-lg border border-zinc-800 bg-zinc-900 p-8 shadow-md shadow-zinc-800/50 text-white mx-auto mt-20">
             <h2 className="mb-6 text-center text-2xl font-bold">Home</h2>
             <div className="flex items-center mb-4">
@@ -48,12 +49,15 @@ const Home = () => {
                     </li>
                 ))}
             </ul>
+            <button className="mt-4 w-full rounded bg-blue-600 px-4 py-2 font-semibold hover:bg-blue-700"
+                onClick={() => {
+                    localStorage.setItem("isLoggedIn", "false");
+                    window.location.href = "/"; // Redirect to login page
+                }
+            }>
+                Logout
+            </button>
         </div>
     );
-    }
-
+};
 export default Home;
-
-function setUser(user: any) {
-    throw new Error("Function not implemented.");
-}
