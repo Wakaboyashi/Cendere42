@@ -1,9 +1,48 @@
+import { useEffect } from 'react';
 import '../../index.css'
-interface LoginProps {
-    onLogin: () => void;
-  }
+import { useNavigate } from "react-router-dom";
+import { doLogin } from '../../contexts/auth/login';
+
   
-  function Login({ onLogin }: LoginProps) {
+  function Login() {
+    const navigate = useNavigate();
+   if (localStorage.getItem("isLoggedIn") === null) {
+      localStorage.setItem("isLoggedIn", "false");
+    }
+
+    useEffect(() => {
+      const isLoggedIn = localStorage.getItem("isLoggedIn");
+      if (isLoggedIn === "true") {
+        navigate("/home", { replace: true });
+      }
+    }
+    , []);
+
+    const handleLogin = async () => {
+    const nickname:string = document.getElementById("nickname").value;
+    const password = document.getElementById("password").value;
+
+      if (!nickname || !password) {
+        alert("Please enter both nickname and password.");
+        return;
+      }
+      console.log(nickname, password)
+      const res = await doLogin(nickname, password);
+      console.log(res)
+      if (res.status === 200) {
+        localStorage.setItem("isLoggedIn", "true");
+        navigate("/home");
+      }
+      else {
+        alert("Login failed. Please check your credentials.");
+      }
+    };
+
+    const handleSign = () => {
+      // Handle sign-up logic here
+      navigate("/signup"); // Navigate to the sign-up page
+    };
+
     return (
           <div
             className="flex flex-col justify-center items-center bg-zinc-950 h-max min-h-[100vh] pb-5"
@@ -14,9 +53,10 @@ interface LoginProps {
               <div
                 className="my-auto mb-auto mt-8 flex flex-col md:mt-[70px] w-[350px] max-w-[450px] mx-auto md:max-w-[450px] lg:mt-[130px] lg:max-w-[450px]"
               >
+                <h2 className="text-2xl/7 font-bold text-white sm:truncate sm:text-3xl sm:tracking-tight font-sans">FT_TRANSCENDENCE</h2>
                 <p className="text-[32px] font-bold text-white">Sign In</p>
                 <p className="mb-2.5 mt-2.5 font-normal text-zinc-400">
-                  Enter your email and password to sign in!
+                  Enter your nickname and password to sign in!
                 </p>
                 <div className="mt-8">
                   <form className="pb-2">
@@ -28,12 +68,12 @@ interface LoginProps {
                         ><svg
                           stroke="currentColor"
                           fill="currentColor"
-                          stroke-width="0"
+                          strokeWidth="0"
                           version="1.1"
                           x="0px"
                           y="0px"
                           viewBox="0 0 48 48"
-                          enable-background="new 0 0 48 48"
+                          enableBackground="new 0 0 48 48"
                           className="h-5 w-5"
                           height="1em"
                           width="1em"
@@ -62,7 +102,7 @@ interface LoginProps {
                           ></path></svg></span>
                           <span>Google</span>
                     </button>
-                  </form>
+                  </form> 
                 </div>
                 <div className="relative my-4">
                   <div className="relative flex items-center py-1">
@@ -74,16 +114,16 @@ interface LoginProps {
                   <form noValidate className="mb-4">
                     <div className="grid gap-2">
                       <div className="grid gap-1">
-                        <label className="text-white" htmlFor="email">Email</label>
+                        <label className="text-white" htmlFor="nickname">nickname</label>
                         <input
                           className="mr-2.5 mb-2 h-full min-h-[44px] w-full rounded-lg border bg-zinc-950 text-white border-zinc-800 px-4 py-3 text-sm font-medium placeholder:text-zinc-400 focus:outline-0 dark:border-zinc-800 dark:bg-transparent dark:text-white dark:placeholder:text-zinc-400"
-                          id="email"
+                          id="nickname"
                           placeholder="name@example.com"
-                          type="email"
+                          type="nickname"
                           autoCapitalize="none"
-                          autoComplete="email"
+                          autoComplete="nickname"
                           autoCorrect="off"
-                          name="email"
+                          name="nickname"
                         /><label
                           className="text-zinc-950 mt-2 dark:text-white"
                           htmlFor="password"
@@ -99,7 +139,8 @@ interface LoginProps {
                       </div>
                       <button
                         className="whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-zinc-950 hover:bg-white/90 active:bg-white/80 flex w-full max-w-full mt-6 items-center justify-center rounded-lg px-4 py-4 text-base font-medium"
-                        onClick={onLogin}
+                        onClick={handleLogin}
+                        type="button"
                       >
                         Sign in
                       </button>
@@ -107,14 +148,14 @@ interface LoginProps {
                   </form>
                   <p>
                     <a
-                      href="/dashboard/signin/forgot_password"
-                      className="font-medium text-white text-sm"
+                      className="font-medium text-white text-sm hover:cursor-pointer"
                       >Forgot your password?</a>
                   </p>
                   <p>
                     <a
-                      href="/dashboard/signin/signup"
-                      className="font-medium text-white text-sm"
+                      onClick={handleSign}
+                      type='button'
+                      className="font-medium text-white text-sm hover:cursor-pointer"
                       >Don't have an account? Sign up</a>
                   </p>
                 </div>

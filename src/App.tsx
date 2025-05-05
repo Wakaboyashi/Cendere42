@@ -1,29 +1,21 @@
 import './App.css'
 import Login from './components/login'
 import Home from './components/home'
-import { useState } from 'react';
+import SignUp from './components/signup'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
-
-
-// src/App.tsx
-function App() {
-  const [route, setRoute] = useState("");
-
-  function onLogin() {
-    // Handle login logic here
-    console.log("User logged in");
-    setRoute("home");
-  }
-
+const App = () => {
   return (
-    <>
-      {route === "home" ? (
-        <Home />
-      ) : (
-        <Login onLogin={onLogin} />
-      )}
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/signup" element={<SignUp />} />
+
+       
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
