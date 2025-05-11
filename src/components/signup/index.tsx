@@ -1,6 +1,7 @@
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 const SignUp = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -35,7 +36,7 @@ const SignUp = () => {
 
       const data = await res.json();
       if (data.success) {
-        Navigate("/home"); // örneğin navigate("/home")
+        navigate("/home"); // örneğin navigate("/home")
       } else {
         setError(data.error || "Kayıt başarısız");
       }

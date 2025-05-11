@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
     const [leaderboardData, setLeaderboard] = useState([]);
     const [user, setUser] = useState({});
+    const navigate = useNavigate();
+    const logout = () => {
+        localStorage.setItem("isLoggedIn", "false");
+        navigate("/");
+    }
     useEffect(() => {
         const fetchData = async () => {
           const res = await fetch("/api/home", {
@@ -28,7 +34,31 @@ const Home = () => {
     const userAvatar = user.avatar; // Placeholder image if avatar is not available
     const userScore = user.score || 0;
 
-      console.log(userName, userAvatar, userScore)
+      if (!userName) {
+        return (
+           /* From Uiverse.io by clarencedion */ 
+<div className="flex items-center justify-center min-h-screen">
+  <div className="relative">
+    <div className="relative w-32 h-32">
+      <div
+        className="absolute w-full h-full rounded-full border-[3px] border-gray-100/10 border-r-[#0ff] border-b-[#0ff] animate-spin"
+        style={{ animationDuration: "3s" }}
+      ></div>
+
+      <div
+        className="absolute w-full h-full rounded-full border-[3px] border-gray-100/10 border-t-[#0ff] animate-spin"
+        style={{ animationDuration: "2s", animationDirection: "reverse" }}
+      ></div>
+    </div>
+
+    <div
+      className="absolute inset-0 bg-gradient-to-tr from-[#0ff]/10 via-transparent to-[#0ff]/5 animate-pulse rounded-full blur-sm"
+    ></div>
+  </div>
+</div>
+
+        );
+      }
     return (
         
         <div className="w-full max-w-md rounded-lg border border-zinc-800 bg-zinc-900 p-8 shadow-md shadow-zinc-800/50 text-white mx-auto mt-20">
@@ -50,11 +80,7 @@ const Home = () => {
                 ))}
             </ul>
             <button className="mt-4 w-full rounded bg-blue-600 px-4 py-2 font-semibold hover:bg-blue-700"
-                onClick={() => {
-                    localStorage.setItem("isLoggedIn", "false");
-                    window.location.href = "/"; // Redirect to login page
-                }
-            }>
+                onClick={logout}>
                 Logout
             </button>
         </div>
